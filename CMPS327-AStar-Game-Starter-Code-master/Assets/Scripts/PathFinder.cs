@@ -34,10 +34,13 @@ public class PathFinder
     // TODO: Find the path based on A-Star Algorithm
     public Queue<Tile> FindPathAStar(Tile start, Tile goal)
     {
+        TODOList.Clear();
+        DoneList.Clear();
         Node startPosition = new Node(start, HeuristicsDistance(start, goal), null, 0);
         TODOList.Add(startPosition);
         while (TODOList.Count > 0)
         {
+
             Node currentNode = TODOList[0];
 
  
@@ -77,7 +80,8 @@ public class PathFinder
                     } 
                 }
             }
-        }            
+        }
+        
         return new Queue<Tile>(); // Returns an empty Path
     }
 
