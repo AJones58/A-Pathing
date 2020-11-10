@@ -159,6 +159,13 @@ public class Enemy : MonoBehaviour
                     state = EnemyState.DEFAULT;
                 }
 
+                //Target is close
+                if (Vector3.Distance(playerGameObject.GetComponent<Transform>().position, transform.position) <= visionDistance)
+                {
+                    targetTile = playerGameObject.GetComponent<Player>().currentTile;
+                }
+
+
                 break;
             default:
                 state = EnemyState.DEFAULT;
@@ -197,10 +204,10 @@ public class Enemy : MonoBehaviour
                     state = EnemyState.DEFAULT;
                 }
 
-                //Target is cloe
+                //Target is close
                 if (Vector3.Distance(playerGameObject.GetComponent<Transform>().position, transform.position) <= visionDistance)
                 {
-                    targetTile = playerGameObject.GetComponent<Player>().currentTile;
+                    targetTile = playerGameObject.GetComponent<Player>().targetTile;
                 }
 
                 break;
