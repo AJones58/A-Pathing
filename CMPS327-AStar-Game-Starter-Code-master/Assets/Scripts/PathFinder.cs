@@ -35,15 +35,11 @@ public class PathFinder
     public Queue<Tile> FindPathAStar(Tile start, Tile goal)
     {
         Node startPosition = new Node(start, HeuristicsDistance(start, goal), null, 0);
-        Node goalPosition = new Node(goal, HeuristicsDistance(goal, start), null, HeuristicsDistance(goal, start));
         TODOList.Add(startPosition);
         while (TODOList.Count > 0)
         {
             Node currentNode = TODOList[0];
-            if (currentNode.tile == goalPosition.tile)
-            {
-                RetracePath(currentNode);
-            }
+
  
             for (int i = 1; i < TODOList.Count; i++)
             {
@@ -55,9 +51,33 @@ public class PathFinder
             TODOList.Remove(currentNode);
             DoneList.Add(currentNode);
 
-          
+            if (currentNode.tile == goal)
+            {
+                return RetracePath(currentNode);
+            }
+
+            foreach (Tile neighbor in currentNode.tile.Adjacents)
+            {
+                Node neighborNode = new Node(neighbor, HeuristicsDistance(neighbor, goal), null, 0);
+                if(DoneList.Contains(neighborNode))
+                {
+                    continue;
+                }
+
+                double movementCost = currentNode.costSoFar + HeuristicsDistance(currentNode.tile, neighborNode.tile);
+                if (movementCost < neighborNode.costSoFar || !TODOList.Contains(neighborNode))
+                {
+                    neighborNode.cameFrom = currentNode;
+                    neighborNode.costSoFar = movementCost;
+                    neighborNode.priority = HeuristicsDistance(neighborNode.tile, goal) + neighborNode.costSoFar;
+
+                    if (!TODOList.Contains(neighborNode))
+                    {
+                        TODOList.Add(neighborNode);
+                    } 
+                }
+            }
         }            
- 
         return new Queue<Tile>(); // Returns an empty Path
     }
 
